@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>post 请求</title>
+</head>
+<body>
+  <form action="/post" method="POST">
+    <input name="username" type="text" placeholder="username">
+    <input name="password" type="password" placeholder="password">
+    <button type="submit">提交</button>
+    <button id="postJson">提交-JSON</button>
+  </form>
+
+  <script src="https://libs.baidu.com/jquery/2.1.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(() => {
+      $('#postJson').click(e => {
+        e.preventDefault()
+        $.ajax({
+          url: '/post-json',
+          type: 'post',
+          contentType: 'application/json',
+          data: JSON.stringify($('#form').serializeArray()),
+          success: (res) => {
+            console.log('got JSON')
+            console.log(res)
+          }
+        })
+      })
+    })
+  </script>
+</body>
+</html>
