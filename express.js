@@ -1,6 +1,7 @@
 const express = require('express')
 const path = require('path')
 const app = express()
+const Joi = require('joi')
 const bodyParser = require('body-parser')
 
 app.get('/', (req, res) => {
@@ -35,7 +36,18 @@ app.get('/post', (req, res) => {
 })
 app.post('/post', (req, res) => {
   const body = req.body
-  res.send(`username: ${body.username} password: ${body.password}`)
+  const schema = Joi.object().keys({
+    email: Joi.string().trim().email().required(),
+    password: Joi.string().min(5).required()
+  })
+
+  schema.validate(body, (err, val) => {
+    if (err) {
+      res.send('您输入的不规范')
+    } else {
+      res.send(`email: ${body.email} password: ${body.password}`)
+    }
+  })
 })
 
 app.use(bodyParser.json())
